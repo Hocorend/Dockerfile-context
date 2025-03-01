@@ -17,7 +17,7 @@ COPY ./*.xml maven/
 
 FROM alpine:latest
 RUN apk add openjdk17
-COPY --from=tomcat-stage /hocorend/apache-tomcat-9.0.100 /app/
+COPY --from=tomcat-stage /hocorend/apache-tomcat-9.0.100 /app/apache-tomcat-9.0.100
 
 EXPOSE 8080
 ENTRYPOINT ["/app/apache-tomcat-9.0.100/bin/catalina.sh"]
