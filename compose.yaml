@@ -6,7 +6,6 @@ networks:
  second:
   driver: bridge
  
-
 services:
  first:
   image: alpine:latest
@@ -17,12 +16,16 @@ services:
  database:
   image: postgres:latest
   environment:
-   - POSTGRES_PASSWORD=pass
+   - POSTGRES_PASSWORD_FILE=/run/secrets/postgres_password
    - POSTGRES_USER=postgres
   ports:
    - "5432:5432"
   networks:
    - first
+  volumes:
+   - db-data:/var/lib/postgres/data
+  secrets:
+   - postgres_password
 
  web:
   image: web-hocorend
@@ -34,5 +37,12 @@ services:
   environment:
    - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/postgres
   networks:
-   - first
+   - first 
    - second
+
+volumes:
+ db-data:
+
+secrets:
+ postgres_password:
+  file: ./secrets.txt
